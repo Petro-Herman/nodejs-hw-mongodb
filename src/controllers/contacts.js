@@ -50,3 +50,7 @@ export const getContactByIdController = async (req, res) => {
         // })
     // }
 }
+
+export const addContactController = async (req, res) => {
+    console.log(req.body);
+}
