@@ -52,5 +52,26 @@ export const getContactByIdController = async (req, res) => {
 }
 
 export const addContactController = async (req, res) => {
-    console.log(req.body);
+    const data = await contactServices.addContact(req.body);
+
+    res.status(201).json({
+        status: 201,
+        message: "Contact successfullt add",
+        data,
+    });
 }
+
+export const upsertContactController = async (req, res) => {
+    const { contactId: _id } = req.params;
+
+    const data = await contactServices.updateContact({ _id, payload: req.body });
+
+    res.json({
+        status: 200,
+        message: "Contact updated successfully",
+        data,
+    })
+}
+// export const upsertStudentController = async (req, res) => {
+//   const { studentId } = req.params;
+// };
