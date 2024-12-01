@@ -12,6 +12,7 @@ const contactSchema = new Schema({
     email: String,
     isFavorite: {
         type: Boolean,
+        required: true,
         default: false,
     },
     contactType: {

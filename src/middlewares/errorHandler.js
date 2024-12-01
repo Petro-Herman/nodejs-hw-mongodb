@@ -3,5 +3,5 @@ export const errorHandler = (error, _, res, next) => {
     res.status(status).json({
         status,
         message,
-    })
-}
+    });
+};
