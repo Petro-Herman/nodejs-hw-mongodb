@@ -1,5 +1,3 @@
-// import { getContactByIdController } from "../controllers/contacts.js";
-
 const ctrlWrapper = getContactByIdController => {
     const func = async (req, res, next) => {
         try {

@@ -1,45 +1,46 @@
 import * as contactServices from "../services/contacts.js";
 import createHttpError from "http-errors";
-import { contactAddSchema } from "../validation/contacts.js";
+import { parsePaginationParams } from "../utils/parsePaginationParams.js";
+import { parseSortParams } from "../utils/parseSortParams.js";
+import { sortByList } from "../db/models/Contact.js";
+import { parseContactFilter } from "../utils/parseContactFilter.js";
 
-export const getContactsController = async (_, res) => {
-        const data = await contactServices.getContacts();
+export const getContactsController = async (req, res) => {
+    const { page, perPage } = parsePaginationParams(req.query);
+    const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
+    const filter = parseContactFilter(req.query);
+    const data = await contactServices.getContacts(page, perPage, sortBy, sortOrder, filter);
 
-        res.json({
-            status: 200,
-            message: "Successfully found contacts!",
-            data,
-        })
+    res.json({
+        status: 200,
+        message: "Successfully found contacts!",
+        data,
+    })
 }
 
 export const getContactByIdController = async (req, res) => {
-    // try {
-        const { contactId } = req.params;
-        const data = await contactServices.getContactById(contactId);
+    const { contactId } = req.params;
+    const data = await contactServices.getContactById(contactId);
 
-        if (!data) {
-            throw createHttpError(404, 'Contact not found');
-        }
+    if (!data) {
+        throw createHttpError(404, 'Contact not found');
+    }
 
-        res.json({
-            status: 200,
-            message: `"Successfully found contact with id ${contactId}!"`,
-            data,
-        })
+    res.json({
+        status: 200,
+        message: `"Successfully found contact with id ${contactId}!"`,
+        data,
+    })
 }
 
 export const addContactController = async (req, res) => {
-    const {error} = contactAddSchema.validate(req.body);
-    if (error) {
-        throw createHttpError(400, error.message);
-    };
-    // const data = await contactServices.addContact(req.body);
+    const data = await contactServices.addContact(req.body);
 
-    // res.status(201).json({
-    //     status: 201,
-    //     message: "Contact successfullt add",
-    //     data,
-    // });
+    res.status(201).json({
+        status: 201,
+        message: "Contact successfullt add",
+        data,
+    });
 }
 
 export const upsertContactController = async (req, res) => {
