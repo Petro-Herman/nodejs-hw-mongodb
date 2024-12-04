@@ -5,3 +5,4 @@ export const errorHandler = (error, _, res, next) => {
         message,
     });
 };
+

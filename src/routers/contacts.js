@@ -22,3 +22,5 @@ contactsRouter.delete("/:contactId", isValidId, ctrlWrapper(contactControllers.d
 
 
 export default contactsRouter;
+
+

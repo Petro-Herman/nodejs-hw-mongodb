@@ -28,3 +28,5 @@ export const parseContactFilter = ({ isFavorite, type }) => {
         parsedTypeContact,
     }
 }
+
+

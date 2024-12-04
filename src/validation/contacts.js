@@ -20,3 +20,4 @@ export const contactUpdateSchema = Joi.object({
     isFavorite: Joi.boolean().valid(true, false),
     contactType: Joi.string().valid(...typeList),
 })
+

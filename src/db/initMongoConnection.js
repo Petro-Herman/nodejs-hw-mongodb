@@ -1,4 +1,4 @@
-//mongodb+srv://Petro:<db_password>@cluster0.509r5.mongodb.netcluster0.509r5.mongodb.netcluster0.509r5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+// //mongodb+srv://Petro:<db_password>@cluster0.509r5.mongodb.netcluster0.509r5.mongodb.netcluster0.509r5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 import { env } from "../utils/env.js";
 import mongoose from "mongoose";
 
@@ -12,7 +12,9 @@ export const initMongoConnection = async () => {
         console.log("Mongo connection successfully established!");
     }
     catch(error) {
-        console.log("Error connect database with message ${error.message}");
+        console.log(`Error connect database with message ${error.message}`);
         throw error;
     }
 }
+
+

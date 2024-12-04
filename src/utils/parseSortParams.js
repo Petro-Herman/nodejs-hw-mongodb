@@ -8,3 +8,5 @@ export const parseSortParams = ({ sortBy, sortOrder }, sortByList) => {
         sortOrder: parsedSortOrder,
     }
 }
+
+

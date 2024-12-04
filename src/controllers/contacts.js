@@ -9,7 +9,7 @@ export const getContactsController = async (req, res) => {
     const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
     const filter = parseContactFilter(req.query);
-    const data = await contactServices.getContacts(page, perPage, sortBy, sortOrder, filter);
+    const data = await contactServices.getContacts({page, perPage, sortBy, sortOrder, filter});
 
     res.json({
         status: 200,
@@ -28,7 +28,7 @@ export const getContactByIdController = async (req, res) => {
 
     res.json({
         status: 200,
-        message: `"Successfully found contact with id ${contactId}!"`,
+        message: `Successfully found contact with id ${contactId}!`,
         data,
     })
 }
@@ -38,7 +38,7 @@ export const addContactController = async (req, res) => {
 
     res.status(201).json({
         status: 201,
-        message: "Contact successfullt add",
+        message: "Contact successfully add",
         data,
     });
 }
@@ -79,3 +79,4 @@ export const deleteContactControllers = async (req, res) => {
     }
     res.status(204).send();
 }
+

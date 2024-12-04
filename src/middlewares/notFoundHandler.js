@@ -4,3 +4,4 @@ export const notFoundHandler = (req, res)=> {
         message: `${req.url} not found`
     })
 }
+

@@ -11,3 +11,4 @@ const ctrlWrapper = getContactByIdController => {
 }
 
 export default ctrlWrapper;
+

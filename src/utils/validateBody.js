@@ -6,11 +6,13 @@ const validateBody = schema => {
             abortEarly: false,
         });
         if (error) {
-            return next(createHttpError(404, error.messsage));
-        }
+            throw createHttpError(400, error.message);
+        };
         next();
-    }
+    };
     return func;
-}
+};
 
 export default validateBody;
+
+

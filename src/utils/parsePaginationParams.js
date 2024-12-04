@@ -17,3 +17,5 @@ export const parsePaginationParams = ({ page, perPage }) => {
         perPage: parsedPerPage,
     };
 };
+
+
