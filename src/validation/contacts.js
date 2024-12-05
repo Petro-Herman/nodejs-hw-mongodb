@@ -9,7 +9,7 @@ export const contactAddSchema = Joi.object({
         "any.required": 'Номер телефона треба вказати'
     }),
     email: Joi.string().min(3).max(20),
-    isFavorite: Joi.boolean().valid(true, false),
+    isFavourite: Joi.boolean().valid(true, false),
     contactType: Joi.string().valid(...typeList),
 })
 
@@ -17,7 +17,7 @@ export const contactUpdateSchema = Joi.object({
     name: Joi.string().min(3).max(20),
     phoneNumber: Joi.string().min(3).max(20),
     email: Joi.string().min(3).max(20),
-    isFavorite: Joi.boolean().valid(true, false),
+    isFavourite: Joi.boolean().valid(true, false),
     contactType: Joi.string().valid(...typeList),
 })
 

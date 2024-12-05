@@ -5,10 +5,10 @@ export const getContacts = async ({ page = 1, perPage = 10, sortBy = "_id", sort
     const skip = (page - 1) * perPage;
     const query = ContactCollection.find().skip(skip).sort({ [sortBy]: sortOrder });
     if (filter.parsedIsFavorite == "true") {
-        query.where("isFavorite").equals("true");
+        query.where("isFavourite").equals("true");
     }
     if (filter.parsedIsFavorite == "false") {
-        query.where("isFavorite").equals("false");
+        query.where("isFavourite").equals("false");
     }
     if (filter.parsedTypeContact) {
         query.where("contactType").equals(filter.parsedTypeContact);
