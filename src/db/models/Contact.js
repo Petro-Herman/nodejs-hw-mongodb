@@ -25,9 +25,11 @@ const contactSchema = new Schema({
     }
 }, { versionKey: false, timestamps: true })
 
-contactSchema.post("save", handleSaveError)
+contactSchema.post("save", handleSaveError);
 
 contactSchema.pre("findOneAndUpdate", setUpdateSettings);
+
+contactSchema.post("findOneAndUpdate", handleSaveError);
 
 export const sortByList = ["name", "phoneNumber", "email"];
 
