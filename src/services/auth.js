@@ -5,6 +5,19 @@ import SessionCollection from "../db/models/Session.js";
 import { randomBytes } from "crypto";
 import { accessTokenLifeTime, refreshTokenLifeTime } from "../constants/user.js";
 
+const createSession = () => {
+    const accessToken = randomBytes(30).toString("base64");
+    const refreshToken = randomBytes(30).toString("base64");
+
+    return {
+        accessToken,
+        refreshToken,
+        accessTokenValidUntill: Date.now() + accessTokenLifeTime,
+        refreshTokenValidUntill: Date.now() + refreshTokenLifeTime,
+    }
+}
+
+
 export const register = async payload => {
     const { email, password } = payload;
     const user = await UserCollection.findOne({ email });
@@ -31,16 +44,34 @@ export const login = async ({email, password}) => {
 
     await SessionCollection.deleteOne({ userId: user._id });
 
-    const accessToken = randomBytes(30).toString("base64");
-    const refreshToken = randomBytes(30).toString("base64");
+    const newSession = createSession();
 
     return SessionCollection.create({
         userId: user._id,
-        accessToken,
-        refreshToken,
-        accessTokenValidUntill: Date.now() + accessTokenLifeTime,
-        refreshTokenValidUntill: Date.now() + refreshTokenLifeTime,
+        ...newSession,
     })
+}
+
+export const refreshUserSession = async ({sessionId, refreshToken}) => {
+    const session = await SessionCollection.findOne({ _id: sessionId, refreshToken });
+    if (!session) {
+        throw createHttpError(401, "Session not found");
+    }
+    if (Date.now() > session.refreshTokenValidUntill) {
+        throw createHttpError(401, "Session  token expired");
+    }
+    await SessionCollection.deleteOne({_id: session._id });
+
+    const newSession = createSession();
+
+    return SessionCollection.create({
+        userId: session.userId,
+        ...newSession,
+    })
+}
+
+export const logout = async (sessionId) => {
+    await SessionCollection.deleteOne({ _id: sessionId });
 }
 
 export const findSession = filter => SessionCollection.findOne(filter);
