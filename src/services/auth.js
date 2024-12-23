@@ -8,7 +8,7 @@ import { accessTokenLifeTime, refreshTokenLifeTime } from "../constants/user.js"
 import { env } from "../utils/env.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { SMTP, TEMPLATES_DIR } from "../constants/index.js";
-import Handlebars from "handlebars";
+import handlebars from "handlebars";
 import path from "node: path";
 import fs from 'node:fs/promises';
 

@@ -4,6 +4,8 @@ import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
 import { sortByList } from "../db/models/Contact.js";
 import { parseContactFilter } from "../utils/parseContactFilter.js";
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { env } from "../utils/env.js";
 
 export const getContactsController = async (req, res) => {
     const { page, perPage } = parsePaginationParams(req.query);
@@ -61,17 +63,46 @@ export const upsertContactController = async (req, res) => {
     })
 }
 
-export const patchContactControllers = async (req, res) => {
-    const { contactId: _id } = req.params;
-    const result = await contactServices.updateContact({ _id, payload: req.body });
-    if (!result) {
-        throw createHttpError(404, "Contact not found");
+export const patchContactControllers = async (req, res, next) => {
+    const { contactId } = req.params;
+    const photo = req.file;
+
+    let photoURL;
+
+    if (photo) {
+        if (env('ENABLE_CLOUdinary') === 'true') {
+            photoUrl = await saveFileToCloudinary(photo);
+        } else {
+            photoUrl = await saveFileToCloudinary(photo);
+        }
     }
-    res.json({
-        status: 200,
-        message: "Successffully patched a contact!",
-        data: result.data,
+
+    const result = await contactServices.updateContact(contactId, {
+        ...req.body,
+        photo: photoUrl,
     });
+
+    if (!result) {
+        next(createHttpError(404, 'Contact not found'));
+        return;
+    }
+
+    res.json({
+        ststus: 200,
+        message: 'Successfully patched a contact!',
+        data: result.student,
+    });
+
+    // const { contactId: _id } = req.params;
+    // const result = await contactServices.updateContact({ _id, payload: req.body });
+    // if (!result) {
+    //     throw createHttpError(404, "Contact not found");
+    // }
+    // res.json({
+    //     status: 200,
+    //     message: "Successffully patched a contact!",
+    //     data: result.data,
+    // });
 };
 
 export const deleteContactControllers = async (req, res) => {
@@ -83,3 +114,4 @@ export const deleteContactControllers = async (req, res) => {
     res.status(204).send();
 }
 
+// export const
